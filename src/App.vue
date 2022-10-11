@@ -1,23 +1,24 @@
 <template>
     <div class="building">
-        <ElevatorShaft :floors="floors" :elevators="elevators" />
         <div class="column">
-            <FloorButton @floor-call="floorCall" :floors="floors" />
-        </div>
-        <div class="column">
-            <div><button @click="addFloor" class="add_floor_button">+</button></div>
             <div><button @click="deleteFloor" class="delete_floor_button">-</button></div>
+            <div><button @click="addFloor" class="add_floor_button">+</button></div>
         </div>
         <div class="column">
             <button @click="deleteElevator" class="delete_floor_button">-</button>
             <button @click="addElevator" class="add_floor_button">+</button>
         </div>
     </div>
+
+    <div class="building">
+        <ElevatorShaft :floors="floors" :elevators="elevators"/>
+        <div class="column">
+            <FloorButton @floor-call="floorCall" :floors="floors" />
+        </div>
+    </div>
 </template>
 
 <script>
-//let buttons_queue = [];
-//var current_floor = 1;
 import ElevatorShaft from './components/ElevatorShaft.vue'
 import FloorButton from './components/FloorButton.vue'
 
@@ -30,17 +31,52 @@ export default {
     data() {
         return {
             floors: [],
-            elevators: []
+            elevators: [],
+            current_floors: [],
+            buttons_queue: [],
         }
     },
     created() {
         this.floors = [5, 4, 3, 2, 1]
-        this.elevators = [1]
+        this.elevators = [1, 2]
+        this.current_floors = [1, 1]
+        this.buttons_queue = []
     },
     methods: {
         floorCall(floor) {
-            console.log('Called ', floor)
+            this.buttons_queue.push(floor);
+            let temp_state = false;
+            for (let i = 0; i < this.current_floors.length; i++) {
+                if (this.current_floors[i] == floor) {
+                    alert('On this floor');
+                    this.buttons_queue.pop(1);
+                    temp_state = true;
+                    break;
+                }
+            }
+            if (!temp_state) {
+                console.log(this.buttons_queue);
+                if (this.buttons_queue.length == 1) {
+                    let min = this.floors.length;
+                    let elevator_number = 0;
+                    for (let i = 0; i < this.current_floors.length; i++) {
+                        if (this.current_floors[i] > 0) {
+                            if (Math.abs(this.current_floors[i] - floor) < min) {
+                                min = Math.abs(this.current_floors[i] - floor)
+                                elevator_number = i;
+                            }
+                        }
+                    }
+                    this.moveCabin(elevator_number, floor)
+                    //this.buttons_queue.pop(0);
+                    setTimeout((elevator_number) => this.current_floors[elevator_number] = this.buttons_queue[0], 1000 * (min + 3))
+                }
+            }
         },
+        moveCabin(elevator_number, floor_to_move) {
+            console.log('Elevator:', elevator_number, ' Moving to:', floor_to_move);
+        },
+
         addFloor() {
             if (this.floors.length == 7) {
                 alert('В данном примере ограничимся 7-ю этажами, у нас элитный малоэтажный пентхаус. ;D');
@@ -83,7 +119,8 @@ export default {
 }
 
 .building>div {
-    vertical-align: bottom;
+    margin-bottom: 40px;
+    vertical-align: top;
     display: inline-block;
     width: auto;
     height: auto;
@@ -122,15 +159,6 @@ export default {
     margin-bottom: 2px;
     height: 120px;
     width: 120px;
-}
-
-.cabine {
-    position: absolute;
-    margin-left: 3px;
-    bottom: 0px;
-    background-color: antiquewhite;
-    height: 120px;
-    width: 118px;
 }
 
 .add_floor_button {

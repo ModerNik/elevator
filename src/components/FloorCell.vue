@@ -1,7 +1,9 @@
 <!-- Ячейка шахты лифта для маштабируемой системы -->
 
 <template>
-    <div class="cell" :key="floor.id" v-for="floor in floors">{{floor}}</div>
+    <div class="cell" :key="floor.id" v-for="floor in floors">
+        {{floor}}
+    </div>
 </template>
 
 <script>

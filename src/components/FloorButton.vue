@@ -10,19 +10,12 @@
 export default {
     name: 'FloorButton',
     props: {
-        floors: Array
+        floors: Array,
     },
     emits: ['floor-call'],
     methods: {
         button_push(floor) {
-            let buttons_queue = []
-            buttons_queue.push(floor);
             this.$emit('floor-call', floor);
-            setTimeout(() => {
-                console.log(buttons_queue.pop(floor));
-            },
-                1000
-            );
         }
     },
 }
