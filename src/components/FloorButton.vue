@@ -16,6 +16,7 @@ export default {
         button_push(floor) {
             let buttons_queue = []
             buttons_queue.push(floor);
+            this.$emit('floor-call', floor);
             setTimeout(() => {
                 console.log(buttons_queue.shift(floor));
             },

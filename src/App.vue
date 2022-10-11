@@ -1,8 +1,16 @@
 <template>
     <div class="building">
-        <ElevatorShaft :floors="floors" :elevators="elevators"/>
+        <ElevatorShaft :floors="floors" :elevators="elevators" />
         <div class="column">
-            <FloorButton :floors="floors"/>
+            <FloorButton @floor-call="floorCall" :floors="floors" />
+        </div>
+        <div class="column">
+            <div><button @click="addFloor" class="add_floor_button">+</button></div>
+            <div><button @click="deleteFloor" class="delete_floor_button">-</button></div>
+        </div>
+        <div class="column">
+            <button @click="deleteElevator" class="delete_floor_button">-</button>
+            <button @click="addElevator" class="add_floor_button">+</button>
         </div>
     </div>
 </template>
@@ -28,6 +36,39 @@ export default {
     created() {
         this.floors = [5, 4, 3, 2, 1]
         this.elevators = [1]
+    },
+    methods: {
+        floorCall(floor) {
+            console.log('Called ', floor)
+        },
+        addFloor() {
+            if (this.floors.length == 7) {
+                alert('В данном примере ограничимся 7-ю этажами, у нас элитный малоэтажный пентхаус. ;D');
+            } else {
+                this.floors.unshift(this.floors.length + 1);
+            }
+        },
+        deleteFloor() {
+            if (this.floors.length > 2) {
+                this.floors.shift();
+            } else {
+                alert('Зачем делать лифт в одноэтажном здании?');
+            }
+        },
+        addElevator() {
+            if (this.elevators.length == 10) {
+                alert('Куда столько? 0_о');
+            } else {
+                this.elevators.push(this.floors.length + 1);
+            }
+        },
+        deleteElevator() {
+            if (this.elevators.length > 1) {
+                this.elevators.pop();
+            } else {
+                alert('Ну хоть 1 то нужно оставить.');
+            }
+        },
     }
 };
 </script>
@@ -49,7 +90,7 @@ export default {
 }
 
 .column {
-    
+    position: relative;
     text-align: center;
     height: 120px;
     margin-right: 10px;
@@ -57,18 +98,12 @@ export default {
 }
 
 .cell {
-    margin-bottom: 2px;
     height: 120px;
     width: 120px;
     border-left-style: solid;
     border-right-style: solid;
     border-width: 2px;
     border-color: #808080;
-}
-
-.divider {
-    margin-top: 0em;
-    margin-bottom: 0em;
 }
 
 .floor_button_style {
@@ -78,12 +113,9 @@ export default {
     height: 40px;
     border: none;
 }
+
 .floor_button_style:hover {
-    border-radius: 10%;
-    background-color:beige;
-    width: 40px;
-    height: 40px;
-    border: none;
+    background-color: beige;
 }
 
 .button_box {
@@ -91,13 +123,51 @@ export default {
     height: 120px;
     width: 120px;
 }
+
 .cabine {
     position: absolute;
-    left: 20px;
-    margin-top: 60px;
-    top: 0px;
+    margin-left: 3px;
+    bottom: 0px;
     background-color: antiquewhite;
     height: 120px;
     width: 118px;
+}
+
+.add_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    color: white;
+    border-radius: 10%;
+    background-color: lawngreen;
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+.add_floor_button:hover {
+    background-color: limegreen;
+}
+
+.delete_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    color: white;
+    border-radius: 10%;
+    background-color: crimson;
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+.delete_floor_button:hover {
+    background-color: brown;
 }
 </style>
