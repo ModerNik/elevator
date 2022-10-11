@@ -1,24 +1,25 @@
 <!-- Прототип кнопок вызова лифта для маштабируемой системы -->
 
 <template>
-    <h2>{{floor}}</h2>
-    <button id={{floor}} class="floor_button_style"/>
+    <button @click="button_push(floor)" class="floor_button_style" />
 </template>
 
 <script>
 export default {
     name: 'FloorButton',
     props: {
-        floor: String,
-    }
+        floor: String
+    },
+    methods: {
+        button_push(floor) {
+            let buttons_queue = []
+            buttons_queue.push(floor);
+            setTimeout(() => {
+                console.log(buttons_queue.shift(floor));
+            },
+                1000
+            );
+        }
+    },
 }
 </script>
-
-<style scoped>
-.floor_button_style {
-    border-radius: 10%;
-    background-color: bisque;
-    width: 40px;
-    height: 40px;
-}
-</style>

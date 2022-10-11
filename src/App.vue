@@ -7,24 +7,30 @@
             <div class="cell">2</div>
             <div class="cell">1</div>
         </div>
+        <div class="column"><div class="cabine"></div></div>
         <div class="column">
-            <div class="button_box"><button class="floor_button_style" id="button_5" floor="5"></button></div>
-            <div class="button_box"><button class="floor_button_style" id="button_4" floor="4"></button></div>
-            <div class="button_box"><button class="floor_button_style" id="button_3" floor="3"></button></div>
-            <div class="button_box"><button class="floor_button_style" id="button_2" floor="2"></button></div>
-            <div class="button_box"><button class="floor_button_style" id="button_1" floor="1"></button></div>
+            <div class="button_box"><FloorButton floor="5"></FloorButton></div>
+            <div class="button_box"><FloorButton floor="4"></FloorButton></div>
+            <div class="button_box"><FloorButton floor="3"></FloorButton></div>
+            <div class="button_box"><FloorButton floor="2"></FloorButton></div>
+            <div class="button_box"><FloorButton floor="1"></FloorButton></div>
         </div>
     </div>
 </template>
-<!-- import FloorButton from './components/FloorButton' -->
+
 <script>
+//let buttons_queue = [];
+//var current_floor = 1;
 
-
-
+import FloorButton from './components/FloorButton.vue'
 export default {
     name: "App",
     components: {
-},
+        FloorButton
+    },
+    methods: {
+        
+    }
 };
 </script>
 
@@ -45,6 +51,7 @@ export default {
 }
 
 .column {
+    
     text-align: center;
     height: 120px;
     margin-right: 10px;
@@ -85,5 +92,14 @@ export default {
     margin-bottom: 2px;
     height: 120px;
     width: 120px;
+}
+.cabine {
+    position: absolute;
+    left: 20px;
+    margin-top: 60px;
+    top: 0px;
+    background-color: antiquewhite;
+    height: 120px;
+    width: 118px;
 }
 </style>
