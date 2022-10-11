@@ -1,14 +1,16 @@
-<!-- Прототип кнопок вызова лифта для маштабируемой системы -->
+<!-- Кнопки вызова лифта для маштабируемой системы -->
 
 <template>
-    <button @click="button_push(floor)" class="floor_button_style" />
+    <div class="button_box" :key="floor.id" v-for="floor in floors">
+        <button @click="button_push(floor)" class="floor_button_style" />
+    </div>
 </template>
 
 <script>
 export default {
     name: 'FloorButton',
     props: {
-        floor: String
+        floors: Array
     },
     methods: {
         button_push(floor) {

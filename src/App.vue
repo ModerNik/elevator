@@ -1,19 +1,8 @@
 <template>
     <div class="building">
+        <ElevatorShaft :floors="floors" :elevators="elevators"/>
         <div class="column">
-            <div class="cell">5</div>
-            <div class="cell">4</div>
-            <div class="cell">3</div>
-            <div class="cell">2</div>
-            <div class="cell">1</div>
-        </div>
-        <div class="column"><div class="cabine"></div></div>
-        <div class="column">
-            <div class="button_box"><FloorButton floor="5"></FloorButton></div>
-            <div class="button_box"><FloorButton floor="4"></FloorButton></div>
-            <div class="button_box"><FloorButton floor="3"></FloorButton></div>
-            <div class="button_box"><FloorButton floor="2"></FloorButton></div>
-            <div class="button_box"><FloorButton floor="1"></FloorButton></div>
+            <FloorButton :floors="floors"/>
         </div>
     </div>
 </template>
@@ -21,15 +10,24 @@
 <script>
 //let buttons_queue = [];
 //var current_floor = 1;
-
+import ElevatorShaft from './components/ElevatorShaft.vue'
 import FloorButton from './components/FloorButton.vue'
+
 export default {
     name: "App",
     components: {
-        FloorButton
+        FloorButton,
+        ElevatorShaft
     },
-    methods: {
-        
+    data() {
+        return {
+            floors: [],
+            elevators: []
+        }
+    },
+    created() {
+        this.floors = [5, 4, 3, 2, 1]
+        this.elevators = [1]
     }
 };
 </script>
@@ -44,7 +42,7 @@ export default {
 }
 
 .building>div {
-    vertical-align: top;
+    vertical-align: bottom;
     display: inline-block;
     width: auto;
     height: auto;
