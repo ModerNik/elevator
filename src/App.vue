@@ -9,7 +9,6 @@
             <button @click="addElevator" class="add_floor_button">+</button>
         </div>
     </div>
-
     <div class="building">
         <ElevatorShaft :floors="floors" :elevators="elevators" />
         <div class="column">
@@ -56,9 +55,9 @@ export default {
                 let temp_state = true;
                 for (let i = 0; i < this.current_floors.length; i++) {
                     if (this.current_floors[i] == this.buttons_queue[0]) {
-                        alert('On this floor');
                         this.buttons_queue.shift();
                         temp_state = false;
+                        this.floorCall(0);
                         break;
                     }
                 }
@@ -101,6 +100,8 @@ export default {
             } else {
                 alert('Зачем делать лифт в одноэтажном здании?');
             }
+            this.buttons_queue.splice(0,this.buttons_queue.length);
+            this.floorCall(1);
         },
         addElevator() {
             if (this.elevators.length >= 10) {
@@ -123,10 +124,8 @@ export default {
 <style>
 #app {
     font-family: Verdana, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     color: #303030;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .building>div {
@@ -161,6 +160,11 @@ export default {
     background-color: antiquewhite;
     height: 120px;
     width: 118px;
+}
+
+.divider {
+    margin-top: 0em;
+    margin-bottom: 0em;
 }
 
 .floor_button_style {

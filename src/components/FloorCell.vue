@@ -2,7 +2,7 @@
 
 <template>
     <div class="cell" :key="floor.id" v-for="floor in floors">
-        {{floor}}
+        <hr class="divider">
     </div>
 </template>
 

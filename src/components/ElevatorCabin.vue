@@ -24,7 +24,7 @@ export default {
     margin-left: 3px;
     bottom: 0px;
     background-color: antiquewhite;
-    height: 120px;
+    height: 118px;
     width: 118px;
     transition: 1s;
 }
