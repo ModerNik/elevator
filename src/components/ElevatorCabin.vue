@@ -1,8 +1,7 @@
-<!-- Шахта лифта для маштабируемой системы -->
+<!-- Кабина лифта для маштабируемой системы -->
 
 <template>
-    <div class="cabin" :key="floor" ref="elevator">
-    </div>
+    <div id="cabin" class="cabina" :key="'cabin-'+elevator"></div>
 </template>
 
 <script>
@@ -13,18 +12,20 @@ export default {
             type: Boolean,
             default: false
         },
-        floor: String
+        floor: String,
+        elevator: String
     },
 }
 </script>
 
-<style>
-.cabin {
+<style scoped>
+.cabina {
     position: absolute;
     margin-left: 3px;
     bottom: 0px;
     background-color: antiquewhite;
     height: 120px;
     width: 118px;
+    transition: 1s;
 }
 </style>

@@ -30,6 +30,10 @@ export default {
     },
     data() {
         return {
+            moving: {
+                Boolean,
+                default: false
+            },
             floors: [],
             elevators: [],
             current_floors: [],
@@ -38,13 +42,15 @@ export default {
     },
     created() {
         this.floors = [5, 4, 3, 2, 1]
-        this.elevators = [1, 2]
-        this.current_floors = [1, 1]
+        this.elevators = [1]
+        this.current_floors = [1]
         this.buttons_queue = []
     },
     methods: {
         floorCall(floor) {
-            this.buttons_queue.push(floor);
+            if(floor) {
+                this.buttons_queue.push(floor);
+            }
             let temp_state = false;
             for (let i = 0; i < this.current_floors.length; i++) {
                 if (this.current_floors[i] == floor) {
@@ -55,26 +61,19 @@ export default {
                 }
             }
             if (!temp_state) {
-                console.log(this.buttons_queue);
-                if (this.buttons_queue.length == 1) {
-                    let min = this.floors.length;
-                    let elevator_number = 0;
-                    for (let i = 0; i < this.current_floors.length; i++) {
-                        if (this.current_floors[i] > 0) {
-                            if (Math.abs(this.current_floors[i] - floor) < min) {
-                                min = Math.abs(this.current_floors[i] - floor)
-                                elevator_number = i;
-                            }
-                        }
-                    }
-                    this.moveCabin(elevator_number, floor)
-                    //this.buttons_queue.pop(0);
-                    setTimeout((elevator_number) => this.current_floors[elevator_number] = this.buttons_queue[0], 1000 * (min + 3))
+                this.moveCabin();
+                for(let i = 0; i < this.current_floors.length; i++){
+                    this.current_floors[i] = this.buttons_queue[0];
                 }
+                console.log(this.buttons_queue);
+                this.buttons_queue.pop();
             }
         },
-        moveCabin(elevator_number, floor_to_move) {
-            console.log('Elevator:', elevator_number, ' Moving to:', floor_to_move);
+        moveCabin() {
+            console.log('Moving to:', this.buttons_queue[0]);
+            document.getElementById("cabin").style.transition = (Math.abs(this.buttons_queue[0]-this.current_floors[0]))+'s';
+            document.getElementById("cabin").style.bottom = this.buttons_queue[0]*120-120+'px';
+            //setTimeout(this.floorCall(0), 3000);
         },
 
         addFloor() {
@@ -92,10 +91,10 @@ export default {
             }
         },
         addElevator() {
-            if (this.elevators.length == 10) {
+            if (this.elevators.length >= 10) {
                 alert('Куда столько? 0_о');
             } else {
-                this.elevators.push(this.floors.length + 1);
+                this.elevators.push(this.elevators.length + 1);
             }
         },
         deleteElevator() {
@@ -143,16 +142,27 @@ export default {
     border-color: #808080;
 }
 
+.cabin {
+    position: absolute;
+    margin-left: 3px;
+    bottom: 0px;
+    background-color: antiquewhite;
+    height: 120px;
+    width: 118px;
+}
+
 .floor_button_style {
     border-radius: 10%;
     background-color: bisque;
     width: 40px;
     height: 40px;
     border: none;
+    transition: 250ms;
 }
 
 .floor_button_style:hover {
     background-color: beige;
+    transition: 250ms;
 }
 
 .button_box {
@@ -174,10 +184,12 @@ export default {
     width: 40px;
     height: 40px;
     border: none;
+    transition: 250ms;
 }
 
 .add_floor_button:hover {
     background-color: limegreen;
+    transition: 250ms;
 }
 
 .delete_floor_button {
@@ -193,9 +205,11 @@ export default {
     width: 40px;
     height: 40px;
     border: none;
+    transition: 250ms;
 }
 
 .delete_floor_button:hover {
     background-color: brown;
+    transition: 250ms;
 }
 </style>
