@@ -11,7 +11,7 @@
     </div>
 
     <div class="building">
-        <ElevatorShaft :floors="floors" :elevators="elevators"/>
+        <ElevatorShaft :floors="floors" :elevators="elevators" />
         <div class="column">
             <FloorButton @floor-call="floorCall" :floors="floors" />
         </div>
@@ -30,10 +30,7 @@ export default {
     },
     data() {
         return {
-            moving: {
-                Boolean,
-                default: false
-            },
+            moving: Boolean,
             floors: [],
             elevators: [],
             current_floors: [],
@@ -45,35 +42,42 @@ export default {
         this.elevators = [1]
         this.current_floors = [1]
         this.buttons_queue = []
+        this.moving = false;
     },
     methods: {
         floorCall(floor) {
-            if(floor) {
+            if (floor) {
                 this.buttons_queue.push(floor);
+            } else {
+                this.moving = false;
             }
-            let temp_state = false;
-            for (let i = 0; i < this.current_floors.length; i++) {
-                if (this.current_floors[i] == floor) {
-                    alert('On this floor');
-                    this.buttons_queue.pop(1);
-                    temp_state = true;
-                    break;
+            if (this.buttons_queue.length != 0 && !this.moving) {
+                let temp_state = true;
+                for (let i = 0; i < this.current_floors.length; i++) {
+                    if (this.current_floors[i] == this.buttons_queue[0]) {
+                        alert('On this floor');
+                        this.buttons_queue.shift();
+                        temp_state = false;
+                        break;
+                    }
                 }
-            }
-            if (!temp_state) {
-                this.moveCabin();
-                for(let i = 0; i < this.current_floors.length; i++){
-                    this.current_floors[i] = this.buttons_queue[0];
+                if (temp_state) {
+                    this.moveCabin();
+                    for (let i = 0; i < this.current_floors.length; i++) {
+                        this.current_floors[i] = this.buttons_queue[0];
+                    }
+                    console.log('Очередь:', this.buttons_queue);
+                    this.buttons_queue.shift();
                 }
-                console.log(this.buttons_queue);
-                this.buttons_queue.pop();
             }
         },
         moveCabin() {
+            this.moving = true;
             console.log('Moving to:', this.buttons_queue[0]);
-            document.getElementById("cabin").style.transition = (Math.abs(this.buttons_queue[0]-this.current_floors[0]))+'s';
-            document.getElementById("cabin").style.bottom = this.buttons_queue[0]*120-120+'px';
-            //setTimeout(this.floorCall(0), 3000);
+            var lifting_time = Math.abs(this.buttons_queue[0] - this.current_floors[0]);
+            document.getElementById("cabin").style.transition = (lifting_time) + 's';
+            document.getElementById("cabin").style.bottom = this.buttons_queue[0] * 120 - 120 + 'px';
+            setTimeout(() => this.floorCall(0), lifting_time*1000+3000);
         },
 
         addFloor() {
