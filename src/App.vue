@@ -49,6 +49,7 @@ export default {
             if (floor) {
                 this.buttons_queue.push(floor);
             } else {
+                console.log('Приехал');
                 this.moving = false;
             }
             if (this.buttons_queue.length != 0 && !this.moving) {
@@ -77,7 +78,14 @@ export default {
             var lifting_time = Math.abs(this.buttons_queue[0] - this.current_floors[0]);
             document.getElementById("cabin").style.transition = (lifting_time) + 's';
             document.getElementById("cabin").style.bottom = this.buttons_queue[0] * 120 - 120 + 'px';
+            setTimeout(() => this.relax(), lifting_time*1000);
             setTimeout(() => this.floorCall(0), lifting_time*1000+3000);
+        },
+
+        relax(){
+            document.getElementById("cabin").style.transition = '1.5s';
+            document.getElementById("cabin").style.opacity = '0.2';
+            setTimeout(() =>document.getElementById("cabin").style.opacity = '1', 1500);
         },
 
         addFloor() {
