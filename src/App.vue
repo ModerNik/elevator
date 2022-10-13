@@ -41,51 +41,111 @@ export default {
         this.elevators = [1]
         this.current_floors = [1]
         this.buttons_queue = []
-        this.moving = false;
     },
     methods: {
         floorCall(floor) {
-            if (floor) {
-                this.buttons_queue.push(floor);
-            } else {
-                console.log('Приехал');
-                this.moving = false;
-            }
-            if (this.buttons_queue.length != 0 && !this.moving) {
+            let call_floor = floor;
+            if (call_floor) {
                 let temp_state = true;
-                for (let i = 0; i < this.current_floors.length; i++) {
-                    if (this.current_floors[i] == this.buttons_queue[0]) {
-                        this.buttons_queue.shift();
+                for (let i = 0; i < this.buttons_queue.length; i++) {
+                    if (call_floor == this.buttons_queue[i]) {
                         temp_state = false;
-                        this.floorCall(0);
                         break;
                     }
                 }
                 if (temp_state) {
-                    this.moveCabin();
                     for (let i = 0; i < this.current_floors.length; i++) {
-                        this.current_floors[i] = this.buttons_queue[0];
+                        if (call_floor == this.current_floors[i]) {
+                            temp_state = false;
+                            break;
+                        }
                     }
+                }
+                if (temp_state) {
+                    this.buttons_queue.push(call_floor);
+                    console.log(this.buttons_queue);
+                    //this.changeButtonColor(1, floor);
+                } else {
+                    return;
+                }
+            } else {
+                console.log('Приехал');
+                console.log(this.buttons_queue);
+            }
+            if (this.buttons_queue.length != 0) {
+                if (call_floor == 0){
+                    let sum = 0;
+                    for (let i = 0; i < this.current_floors.length; i++){
+                        if (this.current_floors[i] == 0){
+                            sum++;
+                        }
+                    }
+                    call_floor = this.buttons_queue[sum];
+                }
+                let cabin_number = 0;
+                let min = this.floors.length;
+                for (let i = 0; i < this.current_floors.length; i++) {
+                    if (this.current_floors[i]) {
+                        let distanse = Math.abs(this.current_floors[i] - call_floor);
+                        if (distanse < min) {
+                            min = distanse;
+                            cabin_number = i + 1;
+                        }
+                    }
+                }
+                /*
+                ToDo:
+                    moving
+                    button colors
+                    Табло индикации движения
+                    Save state???
+                */
+                //if (!cabin_number){ return; }
+                if (cabin_number) {
+                    this.moveCabin(cabin_number, call_floor);
                     console.log('Очередь:', this.buttons_queue);
-                    this.buttons_queue.shift();
                 }
             }
         },
-        moveCabin() {
-            this.moving = true;
-            console.log('Moving to:', this.buttons_queue[0]);
-            var lifting_time = Math.abs(this.buttons_queue[0] - this.current_floors[0]);
-            document.getElementById("cabin").style.transition = (lifting_time) + 's';
-            document.getElementById("cabin").style.bottom = this.buttons_queue[0] * 120 - 120 + 'px';
-            setTimeout(() => this.relax(), lifting_time*1000);
-            setTimeout(() => this.floorCall(0), lifting_time*1000+3000);
+        moveCabin(cabin_number, floor_to_move) {
+            console.log(cabin_number, floor_to_move);
+            var cabinID = 'cabin-' + cabin_number;
+            var cabin = document.getElementById(cabinID);
+            //this.changeButtonColor(2, this.buttons_queue[0]);
+            console.log('Moving to:', floor_to_move);
+            var lifting_time = Math.abs(floor_to_move - this.current_floors[cabin_number - 1]);
+            cabin.style.transition = (lifting_time) + 's';
+            cabin.style.bottom = floor_to_move * 120 - 120 + 'px';
+            setTimeout(() => this.relax(cabin_number), lifting_time * 1000);
+            setTimeout(() => this.buttons_queue.splice(this.buttons_queue.indexOf(floor_to_move), 1), lifting_time * 1000 + 3000);
+            this.current_floors[cabin_number - 1] = 0;
+            setTimeout(() => this.current_floors[cabin_number - 1] = floor_to_move, lifting_time * 1000 + 3000);
+            setTimeout(() => this.floorCall(0), lifting_time * 1000 + 3000);
+            //this.changeButtonColor(3, this.buttons_queue[0]);
         },
 
-        relax(){
-            document.getElementById("cabin").style.transition = '1.5s';
-            document.getElementById("cabin").style.opacity = '0.2';
-            setTimeout(() =>document.getElementById("cabin").style.opacity = '1', 1500);
+        relax(cabin_number) {
+            var cabinID = 'cabin-' + cabin_number;
+            var cabin = document.getElementById(cabinID);
+            cabin.style.transition = '1.5s';
+            cabin.style.opacity = '0.2';
+            setTimeout(() => cabin.style.opacity = '1', 1500);
         },
+
+        /*changeButtonColor(command, buttonID) {
+            switch (command) {
+                case 1:
+                    console.log('change', buttonID, 1);
+                    console.log(this.buttonRefs[0]);
+                    break;
+                case 2:
+                    console.log('change', buttonID, 2);
+                    break;
+                case 3:
+                    console.log('change', buttonID, 3);
+                    break;
+            }
+        },*/
 
         addFloor() {
             if (this.floors.length == 7) {
@@ -100,7 +160,7 @@ export default {
             } else {
                 alert('Зачем делать лифт в одноэтажном здании?');
             }
-            this.buttons_queue.splice(0,this.buttons_queue.length);
+            this.buttons_queue.splice(0, this.buttons_queue.length);
             this.floorCall(1);
         },
         addElevator() {
@@ -108,11 +168,13 @@ export default {
                 alert('Куда столько? 0_о');
             } else {
                 this.elevators.push(this.elevators.length + 1);
+                this.current_floors.push(1);
             }
         },
         deleteElevator() {
             if (this.elevators.length > 1) {
                 this.elevators.pop();
+                this.current_floors.pop();
             } else {
                 alert('Ну хоть 1 то нужно оставить.');
             }
@@ -122,110 +184,5 @@ export default {
 </script>
 
 <style>
-#app {
-    font-family: Verdana, sans-serif;
-    color: #303030;
-    margin-top: 20px;
-}
-
-.building>div {
-    margin-bottom: 40px;
-    vertical-align: top;
-    display: inline-block;
-    width: auto;
-    height: auto;
-}
-
-.column {
-    position: relative;
-    text-align: center;
-    height: 120px;
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-.cell {
-    height: 120px;
-    width: 120px;
-    border-left-style: solid;
-    border-right-style: solid;
-    border-width: 2px;
-    border-color: #808080;
-}
-
-.cabin {
-    position: absolute;
-    margin-left: 3px;
-    bottom: 0px;
-    background-color: antiquewhite;
-    height: 120px;
-    width: 118px;
-}
-
-.divider {
-    margin-top: 0em;
-    margin-bottom: 0em;
-}
-
-.floor_button_style {
-    border-radius: 10%;
-    background-color: bisque;
-    width: 40px;
-    height: 40px;
-    border: none;
-    transition: 250ms;
-}
-
-.floor_button_style:hover {
-    background-color: beige;
-    transition: 250ms;
-}
-
-.button_box {
-    margin-bottom: 2px;
-    height: 120px;
-    width: 120px;
-}
-
-.add_floor_button {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: 8px;
-    margin-right: 8px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 30px;
-    color: white;
-    border-radius: 10%;
-    background-color: lawngreen;
-    width: 40px;
-    height: 40px;
-    border: none;
-    transition: 250ms;
-}
-
-.add_floor_button:hover {
-    background-color: limegreen;
-    transition: 250ms;
-}
-
-.delete_floor_button {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: 8px;
-    margin-right: 8px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 30px;
-    color: white;
-    border-radius: 10%;
-    background-color: crimson;
-    width: 40px;
-    height: 40px;
-    border: none;
-    transition: 250ms;
-}
-
-.delete_floor_button:hover {
-    background-color: brown;
-    transition: 250ms;
-}
+@import './styles/App.css';
 </style>

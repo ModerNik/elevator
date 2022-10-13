@@ -3,7 +3,7 @@
 <template>
     <div class="column" :key="elevator.id" v-for="elevator in elevators">
         <FloorCell :floors="floors"/>
-        <ElevatorCabin/>
+        <ElevatorCabin :elevator="elevator"/>
     </div>
 </template>
 

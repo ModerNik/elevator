@@ -1,19 +1,19 @@
 <!-- Кабина лифта для маштабируемой системы -->
 
 <template>
-    <div id="cabin" class="cabina" :key="'cabin-'+elevator"></div>
+    <div :id="'cabin-'+elevator" class="cabina"></div>
 </template>
 
 <script>
 export default {
-    name: 'ElevatorShaft',
+    name: 'ElevatorCabin',
     props: {
-        moving: {
-            type: Boolean,
-            default: false
+        moving: Boolean,
+        floor: {
+            type: Number,
+            default: 1
         },
-        floor: String,
-        elevator: String
+        elevator: Number
     },
 }
 </script>

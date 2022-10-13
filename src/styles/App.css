@@ -1,0 +1,110 @@
+#app {
+    font-family: Verdana, sans-serif;
+    color: #303030;
+    margin-top: 20px;
+}
+
+.building>div {
+    margin-bottom: 40px;
+    vertical-align: top;
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+
+.column {
+    position: relative;
+    text-align: center;
+    height: 120px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.cell {
+    height: 120px;
+    width: 120px;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-width: 2px;
+    border-color: #808080;
+}
+
+.cabin {
+    position: absolute;
+    margin-left: 3px;
+    bottom: 0px;
+    background-color: antiquewhite;
+    height: 120px;
+    width: 118px;
+}
+
+.divider {
+    margin-top: 0em;
+    margin-bottom: 0em;
+}
+
+.floor_button {
+    font: bold;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: bisque;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: 250ms;
+}
+
+.floor_button:hover {
+    background-color:burlywood;
+    transition: 250ms;
+}
+
+.button_box {
+    margin-bottom: 2px;
+    height: 120px;
+    width: 120px;
+}
+
+.add_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    color: white;
+    border-radius: 10%;
+    background-color: lawngreen;
+    width: 40px;
+    height: 40px;
+    border: none;
+    transition: 250ms;
+}
+
+.add_floor_button:hover {
+    background-color: limegreen;
+    transition: 250ms;
+}
+
+.delete_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    color: white;
+    border-radius: 10%;
+    background-color: crimson;
+    width: 40px;
+    height: 40px;
+    border: none;
+    transition: 250ms;
+}
+
+.delete_floor_button:hover {
+    background-color: brown;
+    transition: 250ms;
+}
