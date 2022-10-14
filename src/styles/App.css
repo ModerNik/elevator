@@ -61,6 +61,42 @@
     transition: 250ms;
 }
 
+.floor_button_wait {
+    font: bold;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: yellow;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: 250ms;
+}
+
+.floor_button_wait:hover {
+    background-color:darkorange;
+    transition: 250ms;
+}
+
+.floor_button_coming {
+    font: bold;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color:mediumvioletred;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: 250ms;
+}
+
+.floor_button_coming:hover {
+    background-color:crimson;
+    transition: 250ms;
+}
+
 .button_box {
     margin-bottom: 2px;
     height: 120px;

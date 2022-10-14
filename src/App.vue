@@ -63,20 +63,19 @@ export default {
                 }
                 if (temp_state) {
                     this.buttons_queue.push(call_floor);
-                    console.log(this.buttons_queue);
-                    //this.changeButtonColor(1, floor);
+                    this.changeButtonColor('wait', call_floor);
                 } else {
                     return;
                 }
             } else {
                 console.log('Приехал');
-                console.log(this.buttons_queue);
+                console.log('Очередь:', this.buttons_queue);
             }
             if (this.buttons_queue.length != 0) {
-                if (call_floor == 0){
+                if (call_floor == 0) {
                     let sum = 0;
-                    for (let i = 0; i < this.current_floors.length; i++){
-                        if (this.current_floors[i] == 0){
+                    for (let i = 0; i < this.current_floors.length; i++) {
+                        if (this.current_floors[i] == 0) {
                             sum++;
                         }
                     }
@@ -95,12 +94,10 @@ export default {
                 }
                 /*
                 ToDo:
-                    moving
                     button colors
                     Табло индикации движения
                     Save state???
                 */
-                //if (!cabin_number){ return; }
                 if (cabin_number) {
                     this.moveCabin(cabin_number, call_floor);
                     console.log('Очередь:', this.buttons_queue);
@@ -108,20 +105,28 @@ export default {
             }
         },
         moveCabin(cabin_number, floor_to_move) {
-            console.log(cabin_number, floor_to_move);
             var cabinID = 'cabin-' + cabin_number;
             var cabin = document.getElementById(cabinID);
-            //this.changeButtonColor(2, this.buttons_queue[0]);
+            this.changeButtonColor('coming', floor_to_move);
             console.log('Moving to:', floor_to_move);
             var lifting_time = Math.abs(floor_to_move - this.current_floors[cabin_number - 1]);
             cabin.style.transition = (lifting_time) + 's';
+            var indicator = 'indicator-'+cabin_number;
+            var indicator_change
+            if (this.current_floors[cabin_number-1]-floor_to_move > 0){
+                indicator_change = '∨';
+            } else {
+                indicator_change = '∧';
+            }
+            indicator_change += ' '+floor_to_move;
+            document.getElementById(indicator).innerHTML = indicator_change;
             cabin.style.bottom = floor_to_move * 120 - 120 + 'px';
             setTimeout(() => this.relax(cabin_number), lifting_time * 1000);
             setTimeout(() => this.buttons_queue.splice(this.buttons_queue.indexOf(floor_to_move), 1), lifting_time * 1000 + 3000);
             this.current_floors[cabin_number - 1] = 0;
             setTimeout(() => this.current_floors[cabin_number - 1] = floor_to_move, lifting_time * 1000 + 3000);
             setTimeout(() => this.floorCall(0), lifting_time * 1000 + 3000);
-            //this.changeButtonColor(3, this.buttons_queue[0]);
+            setTimeout(() => this.changeButtonColor('free', floor_to_move), lifting_time * 1000 + 3000);
         },
 
         relax(cabin_number) {
@@ -132,20 +137,34 @@ export default {
             setTimeout(() => cabin.style.opacity = '1', 1500);
         },
 
-        /*changeButtonColor(command, buttonID) {
+        changeButtonColor(command, button_number) {
+            let buttonID = 'button-' + button_number;
+            let target;
+            try {
+                target = document.getElementById(buttonID).className;
+                console.log(target);
+            }
+            catch (err) {
+                for (let i = 0; i < this.floors.length; i++) {
+                    buttonID = 'button-' + (i + 1);
+                    document.getElementById(buttonID).className = "floor_button";
+                }
+            }
             switch (command) {
-                case 1:
-                    console.log('change', buttonID, 1);
-                    console.log(this.buttonRefs[0]);
+                case 'wait':
+                    document.getElementById(buttonID).className = "floor_button_wait";
                     break;
-                case 2:
-                    console.log('change', buttonID, 2);
+                case 'coming':
+                    document.getElementById(buttonID).className = "floor_button_coming";
                     break;
-                case 3:
-                    console.log('change', buttonID, 3);
+                case 'free':
+                    document.getElementById(buttonID).className = "floor_button";
+                    break;
+                default:
+                    document.getElementById(buttonID).className = "floor_button";
                     break;
             }
-        },*/
+        },
 
         addFloor() {
             if (this.floors.length == 7) {
@@ -157,11 +176,22 @@ export default {
         deleteFloor() {
             if (this.floors.length > 2) {
                 this.floors.shift();
+                for (let i = 0; i < this.floors.length; i++) {
+                    let buttonID = 'button-' + (i + 1);
+                    document.getElementById(buttonID).className = "floor_button";
+                }
+                this.buttons_queue.splice(0, this.buttons_queue.length);
+                for (let i = 0; i < this.current_floors.length; i++) {
+                    this.current_floors[i] = 1;
+                    var cabinID = 'cabin-' + (i + 1);
+                    var cabin = document.getElementById(cabinID);
+                    cabin.style.bottom = '0px';
+                    let indicator = 'indicator-'+(i+1);
+                    document.getElementById(indicator).innerHTML = '1';
+                }
             } else {
                 alert('Зачем делать лифт в одноэтажном здании?');
             }
-            this.buttons_queue.splice(0, this.buttons_queue.length);
-            this.floorCall(1);
         },
         addElevator() {
             if (this.elevators.length >= 10) {
