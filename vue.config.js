@@ -5,4 +5,5 @@ module.exports = defineConfig({
     configureWebpack: {
         plugins: [new MiniCssExtractPlugin()],
     },
+    publicPath: "/Elevator/"
 })

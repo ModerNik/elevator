@@ -92,12 +92,6 @@ export default {
                         }
                     }
                 }
-                /*
-                ToDo:
-                    button colors
-                    Табло индикации движения
-                    Save state???
-                */
                 if (cabin_number) {
                     this.moveCabin(cabin_number, call_floor);
                     console.log('Очередь:', this.buttons_queue);
@@ -214,5 +208,5 @@ export default {
 </script>
 
 <style>
-@import './styles/App.css';
+    @import './styles/App.css';
 </style>
