@@ -1,0 +1,168 @@
+.cabina[data-v-6eded4f0] {
+    position: absolute;
+    margin-left: 3px;
+    bottom: 0;
+    background-color: #faebd7;
+    height: 118px;
+    width: 118px;
+    transition: 1s
+}
+
+.indicator[data-v-6eded4f0] {
+    font-size: 20px;
+    font-family: Courier New, Courier, monospace;
+    margin: 0 auto;
+    margin-top: 8px;
+    background-color: dimgray;
+    height: 20px;
+    width: 60px;
+    border-radius: 5px;
+    color: #f0f8ff
+}
+
+#app {
+    font-family: Verdana, sans-serif;
+    color: #303030;
+    margin-top: 20px
+}
+
+.building>div {
+    margin-bottom: 40px;
+    vertical-align: top;
+    display: inline-block;
+    width: auto;
+    height: auto
+}
+
+.column {
+    position: relative;
+    text-align: center;
+    height: 120px;
+    margin-right: 10px;
+    margin-left: 10px
+}
+
+.cell {
+    height: 120px;
+    width: 120px;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-width: 2px;
+    border-color: grey
+}
+
+.cabin {
+    position: absolute;
+    margin-left: 3px;
+    bottom: 0;
+    background-color: #faebd7;
+    height: 120px;
+    width: 118px
+}
+
+.divider {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.floor_button {
+    font: 700;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: bisque;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: .25s
+}
+
+.floor_button:hover {
+    background-color: #deb887;
+    transition: .25s
+}
+
+.floor_button_wait {
+    font: 700;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: #ff0;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: .25s
+}
+
+.floor_button_wait:hover {
+    background-color: #ff8c00;
+    transition: .25s
+}
+
+.floor_button_coming {
+    font: 700;
+    font-size: 20px;
+    border-radius: 10%;
+    background-color: #c71585;
+    width: 40px;
+    height: 40px;
+    color: #303030;
+    border: none;
+    margin-top: 40px;
+    transition: .25s
+}
+
+.floor_button_coming:hover {
+    background-color: crimson;
+    transition: .25s
+}
+
+.button_box {
+    margin-bottom: 2px;
+    height: 120px;
+    width: 120px
+}
+
+.add_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: Courier New, Courier, monospace;
+    font-size: 30px;
+    color: #fff;
+    border-radius: 10%;
+    background-color: #7cfc00;
+    width: 40px;
+    height: 40px;
+    border: none;
+    transition: .25s
+}
+
+.add_floor_button:hover {
+    background-color: #32cd32;
+    transition: .25s
+}
+
+.delete_floor_button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: Courier New, Courier, monospace;
+    font-size: 30px;
+    color: #fff;
+    border-radius: 10%;
+    background-color: crimson;
+    width: 40px;
+    height: 40px;
+    border: none;
+    transition: .25s
+}
+
+.delete_floor_button:hover {
+    background-color: brown;
+    transition: .25s
+}
