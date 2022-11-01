@@ -5,5 +5,6 @@ module.exports = defineConfig({
     configureWebpack: {
         plugins: [new MiniCssExtractPlugin()],
     },
-    publicPath: "/Elevator/"
+    publicPath: process.env.NODE_ENV === "production"
+    ? '/elevator/' : ''
 })
